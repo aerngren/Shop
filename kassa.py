@@ -19,10 +19,8 @@ class Kassa:
             if sak['id'] == produkt:
                 if sak['enhet'] == 'kg':
                     antal = float(antal)
-                    sak['pris'] = float(sak['pris'])
                 else:
                     antal = int(antal)
-                    sak['pris'] = int(sak['pris'])
                 
                 rabatt = Rabatt.lägg_på_rabatt(produkt)
                 if rabatt is not None:

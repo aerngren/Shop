@@ -16,7 +16,7 @@ class Inventering:
 
     def kolla_varan(self):
         with open('Inventering.csv', 'r', encoding='utf8') as f:
-            spanaren = list( csv.DictReader(f))
+            spanaren = list(csv.DictReader(f))
         
         for sak in spanaren:
             if sak['namn'] == self.namn:
