@@ -17,11 +17,11 @@ class Kassa:
         
         for sak in spanaren:
             if sak['id'] == produkt:
+                sak['pris'] = float(sak['pris'])
                 if sak['enhet'] == 'kg':
                     antal = float(antal)
                 else:
                     antal = int(antal)
-                
                 rabatt = Rabatt.lägg_på_rabatt(produkt)
                 if rabatt is not None:
                     Kassa.grejjor.append([sak["namn"], antal, "*", rabatt, "=", antal * rabatt])
