@@ -52,19 +52,20 @@ class Rabatt:
 
     @classmethod
     def ta_bort_rabatt(cls, index_bort):
-        with open('Rabatter.csv', 'r+', newline='') as f:
+        with open('Rabatter.csv', 'r', newline='') as f:
             spanaren = list(csv.DictReader(f))
-            if 1 <= index_bort <= len(spanaren):
-                del spanaren[index_bort -1]
-                f.seek(0)
-                skrivaren = csv.DictWriter(f, fieldnames=spanaren[0].keys())
+        sann_index = index_bort - 1
+        if 0 <= sann_index < len(spanaren):
+            fieldnames = spanaren[0].keys()
+            del spanaren[sann_index]
+            with open('Rabatter.csv', 'w', newline='') as f:
+                skrivaren = csv.DictWriter(f, fieldnames=fieldnames)
                 skrivaren.writeheader()
                 skrivaren.writerows(spanaren)
-                f.truncate()
+        else:
+            return
 
-            elif index_bort > len(spanaren):
-                return
 
-#vara = Rabatt('222', '2023-10-22', '2023-12-22', 200)
+#vara = Rabatt('222', '2023-10-23', '2023-12-28', 5)
 
 #vara.lägg_till_rabatt()

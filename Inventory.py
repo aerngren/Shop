@@ -2,15 +2,17 @@ import csv
 
 class Inventering:
     def __init__(self, namn, id, pris, enhet) -> None:
-        self.kolla_varan()
-        if enhet == 'kg':
-            self._pris = float(pris)
-        else:
-            self._pris = int(pris)
         if pris < 0:
             raise ValueError('Vi ger inte bort saker i affären!')
+        self._pris = pris
+        if not namn:
+            raise ValueError('Varan måste ha ett namn')
         self.namn = namn
+        if not id:
+            raise ValueError('Varan måste ha ett ID')    
         self._id = id
+        if not enhet:
+            raise ValueError('Varan måste ha en enhet')
         self._enhet = enhet
 
 
@@ -41,10 +43,7 @@ class Inventering:
             for row in spanaren:
                 if row['id'] == id:
                     row['namn'] = nytt_namn
-                    if row['enhet'] == 'kg':
-                        row['pris'] = float(nytt_pris)
-                    else:
-                        row['pris'] = int(nytt_pris)
+                    row['pris'] = float(nytt_pris)
                     hittad = True
             if not hittad:
                 raise ValueError('Varan finns ej')

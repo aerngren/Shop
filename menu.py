@@ -17,11 +17,15 @@ def menu():
                 print(f'-->{Kassa.totalen}')
                 print('kommandon:')
                 print('<produktid> <antal>\nPAY')
-                
+                print('Ångra med 0')
                 varor = input('Kommando: ')
                 if varor.upper() == "PAY":
                     Kassa.kvitto()
                     Kassa.kund_antal_add()
+                    break
+                elif varor == '0':
+                    Kassa.grejjor.clear()
+                    Kassa.totalen = 0
                     break
                 else:
                     produkt, antal = varor.split(' ')
@@ -41,15 +45,17 @@ def administrera_varor():
         print('1. Lägg till vara')
         print('2. Lägg till rabatt')
         print('3. Ta bort rabatt')
+        print('4. Ändra vara')
         val = input("\n0. Gå tillbaka\n>>> ")
         if val == "1":
             print('Lägg till vara')
             namn = input('Namn på varan: ')
             id = input('ID på varan: ')
-            pris = input('Pris på varan: ')
-            enhet = input('Kg eller st pris: ')
+            pris = float(input('Pris på varan: '))
+            enhet = input('kg eller st pris: ').lower()
             grej = Inventering(namn, id, pris, enhet)
-            grej.ändra_namn_pris()
+            grej.kolla_varan()
+
         elif val == "2":
             print('Lägg till rabatt')
             id = input('Vilket ID har produkten: ')
