@@ -8,28 +8,27 @@ def menu():
         val= input('0. Avsluta\n>>> ')
 
         if val == "1":
+            produkter = Kassa()
             while True:
                 print('KASSA')
-                for produkt in Kassa.grejjor:
+                for produkt in produkter.grejjor:
                     for _ in produkt:
                         print(_, end=" ")
                     print()    
-                print(f'-->{Kassa.totalen}')
+                print(f'-->{round(produkter.totalen, 2)}')
                 print('kommandon:')
                 print('<produktid> <antal>\nPAY')
                 print('Ångra med 0')
                 varor = input('Kommando: ')
                 if varor.upper() == "PAY":
-                    Kassa.kvitto()
+                    produkter.kvitto()
                     Kassa.kund_antal_add()
                     break
                 elif varor == '0':
-                    Kassa.grejjor.clear()
-                    Kassa.totalen = 0
                     break
                 else:
                     produkt, antal = varor.split(' ')
-                    Kassa.handla(produkt, antal)
+                    produkter.handla(produkt, antal)
             
         elif val == "2":
             administrera_varor()
@@ -80,7 +79,11 @@ def administrera_varor():
             nytt_pris = float(input('Vilket är det nya priset: '))
             Inventering.ändra_namn_pris(id, nytt_namn, nytt_pris)
 
-
+        elif val == "0":
+            return
+        
+        else:
+            print("Ogiltigt val!")
 
 if __name__ == '__main__':
     menu()

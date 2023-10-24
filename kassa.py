@@ -4,14 +4,14 @@ import datetime
 import csv
 class Kassa:
     räknare = 1
-    def __init__(self, grejjor) -> None:
+    def __init__(self) -> None:
             self.grejjor = []
             self.totalen = 0
             self.idag = datetime.date.today()
             self.nu = datetime.datetime.now()
 
-    @classmethod
-    def handla(cls, produkt, antal):
+
+    def handla(self, produkt, antal):
         with open('Inventering.csv', 'r', encoding='utf8') as f:
             läsaren = csv.DictReader(f)
             spanaren = list(läsaren)
@@ -25,26 +25,25 @@ class Kassa:
                     antal = int(antal)
                 rabatt = Rabatt.lägg_på_rabatt(produkt)
                 if rabatt is not None:
-                    Kassa.grejjor.append([f'{sak["namn"]} {antal} * {rabatt} = {antal * rabatt}'])
-                    cls.totalen += antal * rabatt
+                    self.grejjor.append([f'{sak["namn"]} {antal} * {rabatt} = {round(antal * rabatt, 2)}'])
+                    self.totalen += round(antal * rabatt, 2)
                     
                 else:        
-                    Kassa.grejjor.append([f'{sak["namn"]} {antal} * {sak["pris"]} = {antal * sak["pris"]}'])
-                    cls.totalen += antal * sak['pris']
+                    self.grejjor.append([f'{sak["namn"]} {antal} * {sak["pris"]} = {round(antal * sak["pris"], 2)}'])
+                    self.totalen += round(antal * sak['pris'], 2)
             
 
-    @classmethod
-    def kvitto(cls):
-        cls.kund_antal()
-        with open(f'Kvitto_{cls.idag}.txt', 'a', encoding='utf8') as f:
-            f.write(f'**{str(cls.idag)} {str(cls.nu.strftime("%X"))}**Kund nr:{cls.räknare}**\n')
-            for produkt in Kassa.grejjor:
+
+    def kvitto(self):
+        self.kund_antal()
+        with open(f'Kvitto_{self.idag}.txt', 'a', encoding='utf8') as f:
+            f.write(f'**{str(self.idag)} {str(self.nu.strftime("%X"))}**Kund nr:{self.räknare}**\n')
+            for produkt in self.grejjor:
                 for _ in produkt:
                     f.write(str(_))     
                 f.write('\n')
-            f.write(f'-->{cls.totalen}kr<--\n{20*"*"}\n') 
-        cls.grejjor.clear()
-        cls.totalen = 0
+            f.write(f'-->{self.totalen}kr<--\n{30*"*"}\n') 
+        
 
     @classmethod
     def kund_antal(cls):   
