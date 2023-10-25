@@ -11,7 +11,7 @@ class Kassa:
             self.nu = datetime.datetime.now()
 
 
-    def handla(self, produkt, antal):
+    def handla(self, produkt, antal:int|float):
         with open('Inventering.csv', 'r', encoding='utf8') as f:
             läsaren = csv.DictReader(f)
             spanaren = list(läsaren)
@@ -23,7 +23,7 @@ class Kassa:
                     antal = float(antal)
                 else:
                     antal = int(antal)
-                rabatt = Rabatt.lägg_på_rabatt(produkt)
+                rabatt = Rabatt.lägg_på_rabatt(produkt, self.idag)
                 if rabatt is not None:
                     self.grejjor.append([f'{sak["namn"]} {antal} * {rabatt} = {round(antal * rabatt, 2)}'])
                     self.totalen += round(antal * rabatt, 2)

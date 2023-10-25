@@ -15,7 +15,7 @@ def menu():
                     for _ in produkt:
                         print(_, end=" ")
                     print()    
-                print(f'-->{round(produkter.totalen, 2)}')
+                print(f'-->{round(produkter.totalen, 2)}<--')
                 print('kommandon:')
                 print('<produktid> <antal>\nPAY')
                 print('Ångra med 0')

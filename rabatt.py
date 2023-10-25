@@ -1,11 +1,11 @@
 from datetime import date, datetime
 import csv
 class Rabatt:
-    idag = date.today()
-    def __init__(self, id, start_datum, slut_datum, nytt_pris) -> None:
+    def __init__(self, id, start_datum, slut_datum, nytt_pris:int|float) -> None:
+        self.idag = date.today()
         if datetime.strptime(start_datum, '%Y-%m-%d').date() < self.idag:
             raise ValueError('Det datumet har redan varit!')
-        if datetime.strptime(start_datum, '%Y-%m-%d').date() >= datetime.strptime(slut_datum, '%Y-%m-%d').date():
+        if datetime.strptime(start_datum, '%Y-%m-%d').date() > datetime.strptime(slut_datum, '%Y-%m-%d').date():
             raise ValueError('Start datumet kan inte vara senare än slut datumet')
         if nytt_pris < 0:
             raise ValueError('Vi ger inte bort varor!')
@@ -19,8 +19,7 @@ class Rabatt:
 
     def kolla_vara(self, id):
         with open('Inventering.csv', 'r', encoding='utf8') as f:
-            läsaren = csv.DictReader(f)
-            spanaren = list(läsaren)
+            spanaren = list(csv.DictReader(f))
         for sak in spanaren:
             if sak['id'] == id:
                 break
@@ -33,12 +32,11 @@ class Rabatt:
             spara.writerow([self._id,self.start_datum, self.slut_datum, self.nytt_pris])    
     
     @classmethod
-    def lägg_på_rabatt(cls, id):
+    def lägg_på_rabatt(cls, id, idag):
         with open('Rabatter.csv', 'r') as f:
-            läsaren = csv.DictReader(f)
-            spanaren = list(läsaren)
+            spanaren = list(csv.DictReader(f))
         for sak in spanaren:
-            if sak['id'] == id and date.fromisoformat(sak['slut']) >= cls.idag >= date.fromisoformat(sak['start']):
+            if sak['id'] == id and date.fromisoformat(sak['start']) <= idag <= date.fromisoformat(sak['slut']):
                 return float(sak['pris'])
         return None
 
@@ -65,7 +63,6 @@ class Rabatt:
         else:
             return
 
-
-#vara = Rabatt('222', '2023-10-23', '2023-12-28', 5)
+#vara = Rabatt('222', '2023-12-28', '2023-12-28', 5)
 
 #vara.lägg_till_rabatt()
